@@ -25,3 +25,7 @@ add_library(anitomy_c
     anitomy/anitomy/token.h
     anitomy/anitomy/tokenizer.cpp
     anitomy/anitomy/tokenizer.h)
+
+add_executable(anitomy_c_test
+    testprog.c)
+target_link_libraries(anitomy_c_test anitomy_c)
