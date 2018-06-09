@@ -14,6 +14,22 @@ struct elements_t : public anitomy::Elements {
   using anitomy::Elements::Elements;
 };
 
+bool elements_empty(const elements_t *elements) {
+  return elements->empty();
+}
+
+bool elements_empty_category(const elements_t *elements, element_category_t category) {
+  return elements->empty(static_cast<anitomy::ElementCategory>(category));
+}
+
+size_t elements_size(const elements_t *elements) {
+  return elements->size();
+}
+
+size_t elements_count(const elements_t *elements, element_category_t category) {
+  return elements->count(static_cast<anitomy::ElementCategory>(category));
+}
+
 struct anitomy_t : public anitomy::Anitomy {
   using anitomy::Anitomy::Anitomy;
 };
