@@ -14,6 +14,8 @@ int main(int argc, char **argv) {
 
   assert(anitomy_parse(ani, L"[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv"));
 
+  elements_t *elems = anitomy_elements(ani);
+
   anitomy_destroy(ani);
 
   return 0;

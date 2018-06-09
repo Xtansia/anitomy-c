@@ -10,6 +10,10 @@
 
 #include "anitomy/anitomy/anitomy.h"
 
+struct elements_t : public anitomy::Elements {
+  using anitomy::Elements::Elements;
+};
+
 struct anitomy_t : public anitomy::Anitomy {
   using anitomy::Anitomy::Anitomy;
 };
@@ -24,6 +28,10 @@ anitomy_t *anitomy_new() {
 
 bool anitomy_parse(anitomy_t *anitomy, const wchar_t *filename) {
   return anitomy->Parse(filename);
+}
+
+elements_t *anitomy_elements(anitomy_t *anitomy) {
+  return reinterpret_cast<elements_t *>(&anitomy->elements());
 }
 
 void anitomy_destroy(anitomy_t *anitomy) {

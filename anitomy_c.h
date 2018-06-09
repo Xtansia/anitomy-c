@@ -16,9 +16,11 @@ extern "C" {
 #include <wchar.h>
 
 typedef struct anitomy_t anitomy_t;
+typedef struct elements_t elements_t;
 
 anitomy_t *anitomy_new();
 bool anitomy_parse(anitomy_t *anitomy, const wchar_t *filename);
+elements_t *anitomy_elements(anitomy_t *anitomy);
 void anitomy_destroy(anitomy_t *anitomy);
 
 #ifdef __cplusplus
