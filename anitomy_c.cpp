@@ -7,3 +7,21 @@
 */
 
 #include "anitomy_c.h"
+
+#include "anitomy/anitomy/anitomy.h"
+
+struct anitomy_t : public anitomy::Anitomy {
+  using anitomy::Anitomy::Anitomy;
+};
+
+anitomy_t *anitomy_new() {
+  try {
+    return new anitomy_t;
+  } catch (...) {
+    return nullptr;
+  }
+}
+
+void anitomy_destroy(anitomy_t *anitomy) {
+  delete anitomy;
+}

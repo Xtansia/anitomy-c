@@ -6,17 +6,17 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#ifndef ANITOMY_C_H
-#define ANITOMY_C_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+typedef struct anitomy_t anitomy_t;
 
+anitomy_t *anitomy_new();
+void anitomy_destroy(anitomy_t *anitomy);
 
 #ifdef __cplusplus
-};
-#endif
-
+}
 #endif
