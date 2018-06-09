@@ -22,6 +22,10 @@ anitomy_t *anitomy_new() {
   }
 }
 
+bool anitomy_parse(anitomy_t *anitomy, const wchar_t *filename) {
+  return anitomy->Parse(filename);
+}
+
 void anitomy_destroy(anitomy_t *anitomy) {
   delete anitomy;
 }

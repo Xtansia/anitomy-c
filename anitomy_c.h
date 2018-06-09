@@ -12,9 +12,13 @@
 extern "C" {
 #endif
 
+#include <stdbool.h>
+#include <wchar.h>
+
 typedef struct anitomy_t anitomy_t;
 
 anitomy_t *anitomy_new();
+bool anitomy_parse(anitomy_t *anitomy, const wchar_t *filename);
 void anitomy_destroy(anitomy_t *anitomy);
 
 #ifdef __cplusplus
