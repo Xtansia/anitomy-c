@@ -1,2 +1,2 @@
-# anitomy-c-wrapper
-A C ABI wrapper for Anitomy a C++ library for parsing anime video filenames.
+# anitomy-c
+*anitomy-c* is a C ABI wrapper for [Anitomy](https://github.com/erengy/anitomy) a C++ library for parsing anime video filenames.
