@@ -10,3 +10,4 @@ CTestTestfile.cmake
 .idea/
 *.cbp
 cmake-build-debug/
+build/
