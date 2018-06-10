@@ -8,9 +8,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <wchar.h>
 #include "anitomy_c.h"
 
 char **alloc_array(size_t size) {
