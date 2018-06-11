@@ -9,7 +9,6 @@
 #include "anitomy_c.h"
 
 #include "anitomy/anitomy/anitomy.h"
-#include "anitomy/anitomy/string.h"
 
 #include <algorithm>
 #include <cassert>
@@ -17,7 +16,8 @@
 #include <iostream>
 #include <locale>
 
-using wstring_converter = std::wstring_convert<std::codecvt_utf8<wchar_t, 0x10ffff, std::little_endian>, wchar_t>;
+using wstring_converter = std::wstring_convert<
+    std::codecvt_utf8<wchar_t, 0x10ffff, std::little_endian>, wchar_t>;
 
 inline std::string from_wide(const std::wstring &str) {
   thread_local wstring_converter conv;
@@ -29,9 +29,7 @@ inline std::wstring to_wide(const std::string &str) {
   return conv.from_bytes(str);
 }
 
-void string_free(char *string) {
-  delete[] string;
-}
+void string_free(char *string) { delete[] string; }
 
 void array_free(string_array_t array) {
   for (size_t i = array.size; i > 0; --i) {
@@ -61,7 +59,8 @@ bool elements_empty(const elements_t *elements) {
   return elements->empty();
 }
 
-bool elements_empty_category(const elements_t *elements, element_category_t category) {
+bool elements_empty_category(const elements_t *elements,
+                             element_category_t category) {
   assert(elements != nullptr);
   return elements->empty(static_cast<anitomy::ElementCategory>(category));
 }
@@ -78,16 +77,21 @@ size_t elements_count(const elements_t *elements, element_category_t category) {
 
 char *elements_get(const elements_t *elements, element_category_t category) {
   assert(elements != nullptr);
-  return dupe_string(from_wide(elements->get(static_cast<anitomy::ElementCategory>(category))));
+  return dupe_string(from_wide(
+      elements->get(static_cast<anitomy::ElementCategory>(category))));
 }
 
-string_array_t elements_get_all(const elements_t *elements, element_category_t category) {
+string_array_t elements_get_all(const elements_t *elements,
+                                element_category_t category) {
   assert(elements != nullptr);
-  auto vals = elements->get_all(static_cast<anitomy::ElementCategory>(category));
+  auto vals =
+      elements->get_all(static_cast<anitomy::ElementCategory>(category));
   auto count = vals.size();
   auto **out = new char *[count];
-  std::transform(vals.begin(), vals.end(), out, [](const auto &val) -> char* { return dupe_string(from_wide(val)); });
-  return { out, count };
+  std::transform(vals.begin(), vals.end(), out, [](const auto &val) -> char * {
+    return dupe_string(from_wide(val));
+  });
+  return {out, count};
 }
 
 //

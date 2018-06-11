@@ -6,15 +6,16 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
 #include "anitomy_c.h"
+#include <assert.h>
+#include <string.h>
 
 int main(void) {
   anitomy_t *ani = anitomy_new();
 
-  bool succ = anitomy_parse(ani, "[TaigaSubs]_Toradora!_(2008)_-_01-03v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv");
+  bool succ =
+      anitomy_parse(ani, "[TaigaSubs]_Toradora!_(2008)_-_01-03v2_-_Tiger_and_"
+                         "Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv");
   assert(succ);
 
   elements_t *elems = anitomy_elements(ani);
