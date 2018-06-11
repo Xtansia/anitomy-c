@@ -47,9 +47,9 @@ typedef enum ElementCategory {
   kElementUnknown = kElementIterateLast
 } element_category_t;
 
-typedef struct {
+typedef struct string_array_t {
   char **data;
-  const size_t size;
+  size_t size;
 } string_array_t;
 typedef struct anitomy_t anitomy_t;
 typedef struct elements_t elements_t;
