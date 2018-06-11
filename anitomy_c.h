@@ -69,7 +69,7 @@ string_array_t elements_get_all(const elements_t *elements,
 
 anitomy_t *anitomy_new();
 bool anitomy_parse(anitomy_t *anitomy, const char *filename);
-elements_t *anitomy_elements(anitomy_t *anitomy);
+const elements_t *anitomy_elements(const anitomy_t *anitomy);
 void anitomy_destroy(anitomy_t *anitomy);
 
 #ifdef __cplusplus

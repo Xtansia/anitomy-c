@@ -117,9 +117,9 @@ bool anitomy_parse(anitomy_t *anitomy, const char *filename) {
   return anitomy->Parse(to_wide(filename));
 }
 
-elements_t *anitomy_elements(anitomy_t *anitomy) {
+const elements_t *anitomy_elements(const anitomy_t *anitomy) {
   assert(anitomy != nullptr);
-  return reinterpret_cast<elements_t *>(&anitomy->elements());
+  return reinterpret_cast<const elements_t *>(&anitomy->elements());
 }
 
 void anitomy_destroy(anitomy_t *anitomy) {

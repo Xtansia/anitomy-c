@@ -18,7 +18,7 @@ int main(void) {
                          "Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv");
   assert(succ);
 
-  elements_t *elems = anitomy_elements(ani);
+  const elements_t *elems = anitomy_elements(ani);
 
   bool empty = elements_empty(elems);
   assert(!empty);
