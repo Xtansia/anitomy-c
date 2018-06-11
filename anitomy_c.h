@@ -51,11 +51,17 @@ typedef struct string_array_t {
   char **data;
   size_t size;
 } string_array_t;
-typedef struct anitomy_t anitomy_t;
+typedef struct element_pair_t element_pair_t;
 typedef struct elements_t elements_t;
+typedef struct anitomy_t anitomy_t;
 
 void string_free(char *string);
 void array_free(string_array_t array);
+
+const char *element_category_name(element_category_t element_category);
+
+element_category_t element_pair_category(const element_pair_t *element_pair);
+char *element_pair_value(const element_pair_t *element_pair);
 
 bool elements_empty(const elements_t *elements);
 bool elements_empty_category(const elements_t *elements,
@@ -63,6 +69,7 @@ bool elements_empty_category(const elements_t *elements,
 size_t elements_count(const elements_t *elements);
 size_t elements_count_category(const elements_t *elements,
                                element_category_t category);
+const element_pair_t *elements_at(const elements_t *elements, size_t pos);
 char *elements_get(const elements_t *elements, element_category_t category);
 string_array_t elements_get_all(const elements_t *elements,
                                 element_category_t category);

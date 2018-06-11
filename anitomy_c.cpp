@@ -46,6 +46,82 @@ inline char *dupe_string(const std::string &str) {
   return out;
 }
 
+const char *element_category_name(element_category_t element_category) {
+  switch (element_category) {
+  case kElementAnimeSeason:
+    return "AnimeSeason";
+  case kElementAnimeSeasonPrefix:
+    return "AnimeSeasonPrefix";
+  case kElementAnimeTitle:
+    return "AnimeTitle";
+  case kElementAnimeType:
+    return "AnimeType";
+  case kElementAnimeYear:
+    return "AnimeYear";
+  case kElementAudioTerm:
+    return "AudioTerm";
+  case kElementDeviceCompatibility:
+    return "DeviceCompatibility";
+  case kElementEpisodeNumber:
+    return "EpisodeNumber";
+  case kElementEpisodeNumberAlt:
+    return "EpisodeNumberAlt";
+  case kElementEpisodePrefix:
+    return "EpisodePrefix";
+  case kElementEpisodeTitle:
+    return "EpisodeTitle";
+  case kElementFileChecksum:
+    return "FileChecksum";
+  case kElementFileExtension:
+    return "FileExtension";
+  case kElementFileName:
+    return "FileName";
+  case kElementLanguage:
+    return "Language";
+  case kElementOther:
+    return "Other";
+  case kElementReleaseGroup:
+    return "ReleaseGroup";
+  case kElementReleaseInformation:
+    return "ReleaseInformation";
+  case kElementReleaseVersion:
+    return "ReleaseVersion";
+  case kElementSource:
+    return "Source";
+  case kElementSubtitles:
+    return "Subtitles";
+  case kElementVideoResolution:
+    return "VideoResolution";
+  case kElementVideoTerm:
+    return "VideoTerm";
+  case kElementVolumeNumber:
+    return "VolumeNumber";
+  case kElementVolumePrefix:
+    return "VolumePrefix";
+  case kElementUnknown:
+  default:
+    return "Unknown";
+  }
+}
+
+//
+// element_pair_t
+//
+
+struct element_pair_t : public anitomy::element_pair_t {
+  using anitomy::element_pair_t::pair;
+};
+
+element_category_t element_pair_category(const element_pair_t *element_pair) {
+  assert(element_pair != nullptr);
+  return static_cast<element_category_t>(element_pair->first);
+}
+
+char *element_pair_value(const element_pair_t *element_pair) {
+  assert(element_pair != nullptr);
+  return dupe_string(from_wide(element_pair->second));
+}
+
 //
 // elements_t
 //
@@ -74,6 +150,11 @@ size_t elements_count_category(const elements_t *elements,
                                element_category_t category) {
   assert(elements != nullptr);
   return elements->count(static_cast<anitomy::ElementCategory>(category));
+}
+
+const element_pair_t *elements_at(const elements_t *elements, size_t pos) {
+  assert(elements != nullptr);
+  return reinterpret_cast<const element_pair_t *>(&elements->at(pos));
 }
 
 char *elements_get(const elements_t *elements, element_category_t category) {
