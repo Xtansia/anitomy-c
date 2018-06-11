@@ -41,3 +41,6 @@ add_library(anitomy_c STATIC
 add_executable(anitomy_c_test
     testprog.c)
 target_link_libraries(anitomy_c_test anitomy_c)
+
+install(TARGETS anitomy_c
+    ARCHIVE DESTINATION lib)
