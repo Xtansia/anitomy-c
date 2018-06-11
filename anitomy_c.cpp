@@ -29,9 +29,20 @@ inline std::wstring to_wide(const std::string &str) {
   return conv.from_bytes(str);
 }
 
+void string_free(char *string) {
+  delete string;
+}
+
+void array_free(char **array, size_t size) {
+  for (size_t i = 0; i < size; ++i) {
+    string_free(array[i]);
+  }
+  delete array;
+}
+
 inline char *dupe_string(const std::string &str) {
   auto len = str.length();
-  auto *out = alloc_string(len + 1);
+  auto *out = new char[len + 1];
   assert(out != nullptr);
   str.copy(out, len);
   out[len] = '\0';
@@ -76,7 +87,7 @@ char **elements_get_all(const elements_t *elements, element_category_t category,
   assert(count != nullptr);
   auto vals = elements->get_all(static_cast<anitomy::ElementCategory>(category));
   *count = vals.size();
-  auto **out = alloc_array(*count);
+  auto **out = new char *[*count];
   assert(out != nullptr);
   std::transform(vals.begin(), vals.end(), out, [](const auto &val) -> char* { return dupe_string(from_wide(val)); });
   return out;

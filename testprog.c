@@ -11,14 +11,6 @@
 #include <string.h>
 #include "anitomy_c.h"
 
-char **alloc_array(size_t size) {
-  return malloc(sizeof(char*) * size);
-}
-
-char *alloc_string(size_t len) {
-  return malloc(sizeof(char) * len);
-}
-
 int main(void) {
   anitomy_t *ani = anitomy_new();
 
@@ -41,16 +33,14 @@ int main(void) {
 
   char *anititle = elements_get(elems, kElementAnimeTitle);
   assert(strcmp(anititle, "Toradora!") == 0);
-  free(anititle);
+  string_free(anititle);
 
   size_t epnums_size = 0;
   char **epnums = elements_get_all(elems, kElementEpisodeNumber, &epnums_size);
   assert(epnums_size == 2);
   assert(strcmp(epnums[0], "01") == 0);
   assert(strcmp(epnums[1], "03") == 0);
-  free(epnums[0]);
-  free(epnums[1]);
-  free(epnums);
+  array_free(epnums, epnums_size);
 
   anitomy_destroy(ani);
 

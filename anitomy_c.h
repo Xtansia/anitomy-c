@@ -50,9 +50,8 @@ typedef enum ElementCategory {
 typedef struct anitomy_t anitomy_t;
 typedef struct elements_t elements_t;
 
-// Provided by user
-char **alloc_array(size_t size);
-char *alloc_string(size_t len); // len includes final null
+void string_free(char *string);
+void array_free(char **array, size_t size);
 
 bool elements_empty(const elements_t *elements);
 bool elements_empty_category(const elements_t *elements, element_category_t category);
