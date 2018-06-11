@@ -47,18 +47,22 @@ typedef enum ElementCategory {
   kElementUnknown = kElementIterateLast
 } element_category_t;
 
+typedef struct {
+  char **data;
+  const size_t size;
+} string_array_t;
 typedef struct anitomy_t anitomy_t;
 typedef struct elements_t elements_t;
 
 void string_free(char *string);
-void array_free(char **array, size_t size);
+void array_free(string_array_t array);
 
 bool elements_empty(const elements_t *elements);
 bool elements_empty_category(const elements_t *elements, element_category_t category);
 size_t elements_size(const elements_t *elements);
 size_t elements_count(const elements_t *elements, element_category_t category);
 char *elements_get(const elements_t *elements, element_category_t category);
-char **elements_get_all(const elements_t *elements, element_category_t category, size_t *count);
+string_array_t elements_get_all(const elements_t *elements, element_category_t category);
 
 anitomy_t *anitomy_new();
 bool anitomy_parse(anitomy_t *anitomy, const char *filename);

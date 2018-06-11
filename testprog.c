@@ -35,12 +35,11 @@ int main(void) {
   assert(strcmp(anititle, "Toradora!") == 0);
   string_free(anititle);
 
-  size_t epnums_size = 0;
-  char **epnums = elements_get_all(elems, kElementEpisodeNumber, &epnums_size);
-  assert(epnums_size == 2);
-  assert(strcmp(epnums[0], "01") == 0);
-  assert(strcmp(epnums[1], "03") == 0);
-  array_free(epnums, epnums_size);
+  string_array_t epnums = elements_get_all(elems, kElementEpisodeNumber);
+  assert(epnums.size == 2);
+  assert(strcmp(epnums.data[0], "01") == 0);
+  assert(strcmp(epnums.data[1], "03") == 0);
+  array_free(epnums);
 
   anitomy_destroy(ani);
 

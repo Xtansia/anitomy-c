@@ -30,20 +30,19 @@ inline std::wstring to_wide(const std::string &str) {
 }
 
 void string_free(char *string) {
-  delete string;
+  delete[] string;
 }
 
-void array_free(char **array, size_t size) {
-  for (size_t i = 0; i < size; ++i) {
-    string_free(array[i]);
+void array_free(string_array_t array) {
+  for (size_t i = array.size; i > 0; --i) {
+    delete[] array.data[i - 1];
   }
-  delete array;
+  delete[] array.data;
 }
 
 inline char *dupe_string(const std::string &str) {
   auto len = str.length();
   auto *out = new char[len + 1];
-  assert(out != nullptr);
   str.copy(out, len);
   out[len] = '\0';
   return out;
@@ -82,15 +81,13 @@ char *elements_get(const elements_t *elements, element_category_t category) {
   return dupe_string(from_wide(elements->get(static_cast<anitomy::ElementCategory>(category))));
 }
 
-char **elements_get_all(const elements_t *elements, element_category_t category, size_t *count) {
+string_array_t elements_get_all(const elements_t *elements, element_category_t category) {
   assert(elements != nullptr);
-  assert(count != nullptr);
   auto vals = elements->get_all(static_cast<anitomy::ElementCategory>(category));
-  *count = vals.size();
-  auto **out = new char *[*count];
-  assert(out != nullptr);
+  auto count = vals.size();
+  auto **out = new char *[count];
   std::transform(vals.begin(), vals.end(), out, [](const auto &val) -> char* { return dupe_string(from_wide(val)); });
-  return out;
+  return { out, count };
 }
 
 //
