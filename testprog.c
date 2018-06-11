@@ -19,7 +19,7 @@ char *alloc_string(size_t len) {
   return malloc(sizeof(char) * len);
 }
 
-int main(int argc, char **argv) {
+int main(void) {
   anitomy_t *ani = anitomy_new();
 
   bool succ = anitomy_parse(ani, "[TaigaSubs]_Toradora!_(2008)_-_01-03v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv");
