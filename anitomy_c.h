@@ -60,8 +60,9 @@ void array_free(string_array_t array);
 bool elements_empty(const elements_t *elements);
 bool elements_empty_category(const elements_t *elements,
                              element_category_t category);
-size_t elements_size(const elements_t *elements);
-size_t elements_count(const elements_t *elements, element_category_t category);
+size_t elements_count(const elements_t *elements);
+size_t elements_count_category(const elements_t *elements,
+                               element_category_t category);
 char *elements_get(const elements_t *elements, element_category_t category);
 string_array_t elements_get_all(const elements_t *elements,
                                 element_category_t category);

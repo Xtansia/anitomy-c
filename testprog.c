@@ -23,13 +23,13 @@ int main(void) {
   bool empty = elements_empty(elems);
   assert(!empty);
 
-  size_t size = elements_size(elems);
+  size_t size = elements_count(elems);
   assert(size == 13);
 
   bool anititle_empty = elements_empty_category(elems, kElementAnimeTitle);
   assert(!anititle_empty);
 
-  size_t anititle_count = elements_count(elems, kElementAnimeTitle);
+  size_t anititle_count = elements_count_category(elems, kElementAnimeTitle);
   assert(anititle_count == 1);
 
   char *anititle = elements_get(elems, kElementAnimeTitle);

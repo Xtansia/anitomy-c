@@ -65,12 +65,13 @@ bool elements_empty_category(const elements_t *elements,
   return elements->empty(static_cast<anitomy::ElementCategory>(category));
 }
 
-size_t elements_size(const elements_t *elements) {
+size_t elements_count(const elements_t *elements) {
   assert(elements != nullptr);
   return elements->size();
 }
 
-size_t elements_count(const elements_t *elements, element_category_t category) {
+size_t elements_count_category(const elements_t *elements,
+                               element_category_t category) {
   assert(elements != nullptr);
   return elements->count(static_cast<anitomy::ElementCategory>(category));
 }
