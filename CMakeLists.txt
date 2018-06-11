@@ -12,7 +12,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -stdlib=libc++")
 endif()
 
-add_library(anitomy_c
+add_library(anitomy_c STATIC
     anitomy_c.cpp
     anitomy_c.h
     anitomy/anitomy/anitomy.cpp
