@@ -29,19 +29,15 @@ inline std::wstring to_wide(const std::string &str) {
   return conv.from_bytes(str);
 }
 
-//
-// string_t
-//
-
-void string_free(string_t string) {
+void string_free(char *string) {
   assert(string != nullptr);
   delete[] string;
 }
 
-inline string_t dupe_string(const std::string &str) {
+inline char *dupe_string(const std::wstring &str) {
   auto len = str.length();
   auto *out = new char[len + 1];
-  str.copy(out, len);
+  from_wide(str).copy(out, len);
   out[len] = '\0';
   return out;
 }
@@ -68,13 +64,13 @@ size_t string_array_size(const string_array_t *array) {
   return array->size();
 }
 
-string_t string_array_at(const string_array_t *array, size_t pos) {
+const char *string_array_at(const string_array_t *array, size_t pos) {
   assert(array != nullptr);
   assert(pos < array->size());
   return array->at(pos).c_str();
 }
 
-void string_array_add(string_array_t *array, string_t value) {
+void string_array_add(string_array_t *array, const char *value) {
   assert(array != nullptr);
   assert(value != nullptr);
   array->push_back(value);
@@ -92,7 +88,7 @@ void string_array_free(const string_array_t *array) {
 struct options_t : public anitomy::Options {};
 
 void options_allowed_delimiters(options_t *options,
-                                string_t allowed_delimiters) {
+                                const char *allowed_delimiters) {
   assert(options != nullptr);
   if (allowed_delimiters == nullptr) {
     options->allowed_delimiters.clear();
@@ -148,7 +144,7 @@ element_category_t element_pair_category(const element_pair_t *element_pair) {
   return static_cast<element_category_t>(element_pair->first);
 }
 
-string_t element_pair_value(const element_pair_t *element_pair) {
+char *element_pair_value(const element_pair_t *element_pair) {
   assert(element_pair != nullptr);
   return dupe_string(from_wide(element_pair->second));
 }
@@ -189,10 +185,10 @@ const element_pair_t *elements_at(const elements_t *elements, size_t pos) {
   return reinterpret_cast<const element_pair_t *>(&elements->at(pos));
 }
 
-string_t elements_get(const elements_t *elements, element_category_t category) {
+char *elements_get(const elements_t *elements, element_category_t category) {
   assert(elements != nullptr);
-  return dupe_string(from_wide(
-      elements->get(static_cast<anitomy::ElementCategory>(category))));
+  return dupe_string(
+      elements->get(static_cast<anitomy::ElementCategory>(category)));
 }
 
 string_array_t *elements_get_all(const elements_t *elements,
@@ -218,7 +214,7 @@ anitomy_t *anitomy_new() {
   }
 }
 
-bool anitomy_parse(anitomy_t *anitomy, string_t filename) {
+bool anitomy_parse(anitomy_t *anitomy, const char *filename) {
   assert(anitomy != nullptr);
   assert(filename != nullptr);
   return anitomy->Parse(to_wide(filename));

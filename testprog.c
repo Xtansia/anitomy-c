@@ -73,7 +73,7 @@ int main(void) {
   anitomy_t *ani = anitomy_new();
   assert(ani);
 
-  string_t filename =
+  const char *filename =
       "[異域字幕組][漆黑的子彈][Black Bullet][11-12][1280x720][繁体].mp4";
   printf("Filename: %s\n", filename);
 
@@ -97,7 +97,7 @@ int main(void) {
   assert((!elements_empty_category(elems, kElementAnimeTitle)));
   assert((elements_count_category(elems, kElementAnimeTitle) == 1));
 
-  string_t anititle = elements_get(elems, kElementAnimeTitle);
+  char *anititle = elements_get(elems, kElementAnimeTitle);
   assert((strcmp(anititle, "Bullet") == 0));
   string_free(anititle);
 
@@ -113,7 +113,7 @@ int main(void) {
   for (size_t i = 0; i < count; ++i) {
     const element_pair_t *pair = elements_at(elems, i);
     element_category_t category = element_pair_category(pair);
-    string_t value = element_pair_value(pair);
+    char *value = element_pair_value(pair);
     printf("  - %d: %s => '%s'\n", (int)i, element_category_name(category),
            value);
     string_free(value);
