@@ -29,16 +29,13 @@ inline std::wstring to_wide(const std::string &str) {
   return conv.from_bytes(str);
 }
 
-void string_free(char *string) { delete[] string; }
+//
+// string_t
+//
 
-void array_free(string_array_t array) {
-  for (size_t i = array.size; i > 0; --i) {
-    delete[] array.data[i - 1];
-  }
-  delete[] array.data;
-}
+void string_free(string_t string) { delete[] string; }
 
-inline char *dupe_string(const std::string &str) {
+inline string_t dupe_string(const std::string &str) {
   auto len = str.length();
   auto *out = new char[len + 1];
   str.copy(out, len);
@@ -46,63 +43,24 @@ inline char *dupe_string(const std::string &str) {
   return out;
 }
 
-const char *element_category_name(element_category_t element_category) {
-  switch (element_category) {
-  case kElementAnimeSeason:
-    return "AnimeSeason";
-  case kElementAnimeSeasonPrefix:
-    return "AnimeSeasonPrefix";
-  case kElementAnimeTitle:
-    return "AnimeTitle";
-  case kElementAnimeType:
-    return "AnimeType";
-  case kElementAnimeYear:
-    return "AnimeYear";
-  case kElementAudioTerm:
-    return "AudioTerm";
-  case kElementDeviceCompatibility:
-    return "DeviceCompatibility";
-  case kElementEpisodeNumber:
-    return "EpisodeNumber";
-  case kElementEpisodeNumberAlt:
-    return "EpisodeNumberAlt";
-  case kElementEpisodePrefix:
-    return "EpisodePrefix";
-  case kElementEpisodeTitle:
-    return "EpisodeTitle";
-  case kElementFileChecksum:
-    return "FileChecksum";
-  case kElementFileExtension:
-    return "FileExtension";
-  case kElementFileName:
-    return "FileName";
-  case kElementLanguage:
-    return "Language";
-  case kElementOther:
-    return "Other";
-  case kElementReleaseGroup:
-    return "ReleaseGroup";
-  case kElementReleaseInformation:
-    return "ReleaseInformation";
-  case kElementReleaseVersion:
-    return "ReleaseVersion";
-  case kElementSource:
-    return "Source";
-  case kElementSubtitles:
-    return "Subtitles";
-  case kElementVideoResolution:
-    return "VideoResolution";
-  case kElementVideoTerm:
-    return "VideoTerm";
-  case kElementVolumeNumber:
-    return "VolumeNumber";
-  case kElementVolumePrefix:
-    return "VolumePrefix";
-  case kElementUnknown:
-  default:
-    return "Unknown";
+//
+// string_array_t
+//
+
+struct string_array_t : public std::vector<string_t> {
+  explicit string_array_t(const std::vector<anitomy::string_t> &strings) {
+    this->reserve(strings.size());
+    std::transform(strings.begin(), strings.end(), std::back_inserter(*this),
+                   [](const auto &it) { return dupe_string(from_wide(it)); });
   }
+};
+
+const string_t *string_array_data(const string_array_t *array, size_t *size) {
+  *size = array->size();
+  return array->data();
 }
+
+void string_array_free(const string_array_t *array) { delete array; }
 
 //
 // element_pair_t
@@ -117,7 +75,7 @@ element_category_t element_pair_category(const element_pair_t *element_pair) {
   return static_cast<element_category_t>(element_pair->first);
 }
 
-char *element_pair_value(const element_pair_t *element_pair) {
+string_t element_pair_value(const element_pair_t *element_pair) {
   assert(element_pair != nullptr);
   return dupe_string(from_wide(element_pair->second));
 }
@@ -157,23 +115,17 @@ const element_pair_t *elements_at(const elements_t *elements, size_t pos) {
   return reinterpret_cast<const element_pair_t *>(&elements->at(pos));
 }
 
-char *elements_get(const elements_t *elements, element_category_t category) {
+string_t elements_get(const elements_t *elements, element_category_t category) {
   assert(elements != nullptr);
   return dupe_string(from_wide(
       elements->get(static_cast<anitomy::ElementCategory>(category))));
 }
 
-string_array_t elements_get_all(const elements_t *elements,
-                                element_category_t category) {
+string_array_t *elements_get_all(const elements_t *elements,
+                                 element_category_t category) {
   assert(elements != nullptr);
-  auto vals =
-      elements->get_all(static_cast<anitomy::ElementCategory>(category));
-  auto count = vals.size();
-  auto **out = new char *[count];
-  std::transform(vals.begin(), vals.end(), out, [](const auto &val) -> char * {
-    return dupe_string(from_wide(val));
-  });
-  return {out, count};
+  return new string_array_t(
+      elements->get_all(static_cast<anitomy::ElementCategory>(category)));
 }
 
 //
@@ -192,7 +144,7 @@ anitomy_t *anitomy_new() {
   }
 }
 
-bool anitomy_parse(anitomy_t *anitomy, const char *filename) {
+bool anitomy_parse(anitomy_t *anitomy, string_t filename) {
   assert(anitomy != nullptr);
   assert(filename != nullptr);
   return anitomy->Parse(to_wide(filename));

@@ -11,10 +11,68 @@
 #include <stdio.h>
 #include <string.h>
 
+const char *element_category_name(element_category_t element_category) {
+  switch (element_category) {
+  case kElementAnimeSeason:
+    return "AnimeSeason";
+  case kElementAnimeSeasonPrefix:
+    return "AnimeSeasonPrefix";
+  case kElementAnimeTitle:
+    return "AnimeTitle";
+  case kElementAnimeType:
+    return "AnimeType";
+  case kElementAnimeYear:
+    return "AnimeYear";
+  case kElementAudioTerm:
+    return "AudioTerm";
+  case kElementDeviceCompatibility:
+    return "DeviceCompatibility";
+  case kElementEpisodeNumber:
+    return "EpisodeNumber";
+  case kElementEpisodeNumberAlt:
+    return "EpisodeNumberAlt";
+  case kElementEpisodePrefix:
+    return "EpisodePrefix";
+  case kElementEpisodeTitle:
+    return "EpisodeTitle";
+  case kElementFileChecksum:
+    return "FileChecksum";
+  case kElementFileExtension:
+    return "FileExtension";
+  case kElementFileName:
+    return "FileName";
+  case kElementLanguage:
+    return "Language";
+  case kElementOther:
+    return "Other";
+  case kElementReleaseGroup:
+    return "ReleaseGroup";
+  case kElementReleaseInformation:
+    return "ReleaseInformation";
+  case kElementReleaseVersion:
+    return "ReleaseVersion";
+  case kElementSource:
+    return "Source";
+  case kElementSubtitles:
+    return "Subtitles";
+  case kElementVideoResolution:
+    return "VideoResolution";
+  case kElementVideoTerm:
+    return "VideoTerm";
+  case kElementVolumeNumber:
+    return "VolumeNumber";
+  case kElementVolumePrefix:
+    return "VolumePrefix";
+  case kElementUnknown:
+  default:
+    return "Unknown";
+  }
+}
+
 int main(void) {
   anitomy_t *ani = anitomy_new();
 
-  const char *filename =
+  string_t filename =
       "[異域字幕組][漆黑的子彈][Black Bullet][11-12][1280x720][繁体].mp4";
 
   printf("Filename: %s\n", filename);
@@ -36,23 +94,26 @@ int main(void) {
   size_t anititle_count = elements_count_category(elems, kElementAnimeTitle);
   assert(anititle_count == 1);
 
-  char *anititle = elements_get(elems, kElementAnimeTitle);
+  string_t anititle = elements_get(elems, kElementAnimeTitle);
   assert(strcmp(anititle, "Black Bullet") == 0);
   string_free(anititle);
 
-  string_array_t epnums = elements_get_all(elems, kElementEpisodeNumber);
-  assert(epnums.size == 2);
-  assert(strcmp(epnums.data[0], "11") == 0);
-  assert(strcmp(epnums.data[1], "12") == 0);
-  array_free(epnums);
+  string_array_t *epnums = elements_get_all(elems, kElementEpisodeNumber);
+  size_t epnums_size;
+  const string_t *epnums_data = string_array_data(epnums, &epnums_size);
+  assert(epnums_size == 2);
+  assert(strcmp(epnums_data[0], "11") == 0);
+  assert(strcmp(epnums_data[1], "12") == 0);
+  string_array_free(epnums);
 
   printf("Elements:\n");
 
   for (size_t i = 0; i < size; ++i) {
     const element_pair_t *pair = elements_at(elems, i);
     element_category_t category = element_pair_category(pair);
-    char *value = element_pair_value(pair);
-    printf("  - %d: %s => '%s'\n", (int)i, element_category_name(category), value);
+    string_t value = element_pair_value(pair);
+    printf("  - %d: %s => '%s'\n", (int)i, element_category_name(category),
+           value);
     string_free(value);
   }
 
