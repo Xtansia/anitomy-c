@@ -34,10 +34,11 @@ void string_free(char *string) {
   delete[] string;
 }
 
-inline char *dupe_string(const std::wstring &str) {
+inline char *dupe_string(const std::wstring &wstr) {
+  auto str = from_wide(wstr);
   auto len = str.length();
   auto *out = new char[len + 1];
-  from_wide(str).copy(out, len);
+  str.copy(out, len);
   out[len] = '\0';
   return out;
 }
