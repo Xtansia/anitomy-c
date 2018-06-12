@@ -135,6 +135,7 @@ size_t elements_count_category(const elements_t *elements,
 
 const element_pair_t *elements_at(const elements_t *elements, size_t pos) {
   assert(elements != nullptr);
+  assert(pos < elements->size());
   return reinterpret_cast<const element_pair_t *>(&elements->at(pos));
 }
 
