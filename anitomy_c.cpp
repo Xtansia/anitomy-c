@@ -132,24 +132,6 @@ void options_parse_release_group(options_t *options, bool parse_release_group) {
 }
 
 //
-// element_pair_t
-//
-
-struct element_pair_t : public anitomy::element_pair_t {
-  using anitomy::element_pair_t::pair;
-};
-
-element_category_t element_pair_category(const element_pair_t *element_pair) {
-  assert(element_pair != nullptr);
-  return static_cast<element_category_t>(element_pair->first);
-}
-
-char *element_pair_value(const element_pair_t *element_pair) {
-  assert(element_pair != nullptr);
-  return dupe_string(from_wide(element_pair->second));
-}
-
-//
 // elements_t
 //
 
@@ -179,10 +161,12 @@ size_t elements_count_category(const elements_t *elements,
   return elements->count(static_cast<anitomy::ElementCategory>(category));
 }
 
-const element_pair_t *elements_at(const elements_t *elements, size_t pos) {
+element_pair_t elements_at(const elements_t *elements, size_t pos) {
   assert(elements != nullptr);
   assert(pos < elements->size());
-  return reinterpret_cast<const element_pair_t *>(&elements->at(pos));
+  const auto &pair = elements->at(pos);
+  return {static_cast<element_category_t>(pair.first),
+          dupe_string(pair.second)};
 }
 
 char *elements_get(const elements_t *elements, element_category_t category) {

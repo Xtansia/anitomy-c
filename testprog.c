@@ -111,12 +111,10 @@ int main(void) {
 
   size_t count = elements_count(elems);
   for (size_t i = 0; i < count; ++i) {
-    const element_pair_t *pair = elements_at(elems, i);
-    element_category_t category = element_pair_category(pair);
-    char *value = element_pair_value(pair);
-    printf("  - %d: %s => '%s'\n", (int)i, element_category_name(category),
-           value);
-    string_free(value);
+    element_pair_t pair = elements_at(elems, i);
+    printf("  - %d: %s => '%s'\n", (int)i, element_category_name(pair.category),
+           pair.value);
+    string_free(pair.value);
   }
 
   anitomy_destroy(ani);

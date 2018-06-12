@@ -49,7 +49,10 @@ typedef enum ElementCategory {
 
 typedef struct string_array_t string_array_t;
 typedef struct options_t options_t;
-typedef struct element_pair_t element_pair_t;
+typedef struct element_pair_t {
+  element_category_t category;
+  char *value;
+} element_pair_t;
 typedef struct elements_t elements_t;
 typedef struct anitomy_t anitomy_t;
 
@@ -72,16 +75,13 @@ void options_parse_file_extension(options_t *options,
                                   bool parse_file_extension);
 void options_parse_release_group(options_t *options, bool parse_release_group);
 
-element_category_t element_pair_category(const element_pair_t *element_pair);
-char *element_pair_value(const element_pair_t *element_pair);
-
 bool elements_empty(const elements_t *elements);
 bool elements_empty_category(const elements_t *elements,
                              element_category_t category);
 size_t elements_count(const elements_t *elements);
 size_t elements_count_category(const elements_t *elements,
                                element_category_t category);
-const element_pair_t *elements_at(const elements_t *elements, size_t pos);
+element_pair_t elements_at(const elements_t *elements, size_t pos);
 char *elements_get(const elements_t *elements, element_category_t category);
 string_array_t *elements_get_all(const elements_t *elements,
                                  element_category_t category);
