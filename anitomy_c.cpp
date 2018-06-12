@@ -86,6 +86,56 @@ void string_array_free(const string_array_t *array) {
 }
 
 //
+// options_t
+//
+
+struct options_t : public anitomy::Options {};
+
+void options_allowed_delimiters(options_t *options,
+                                string_t allowed_delimiters) {
+  assert(options != nullptr);
+  if (allowed_delimiters == nullptr) {
+    options->allowed_delimiters.clear();
+    return;
+  }
+  options->allowed_delimiters = to_wide(allowed_delimiters);
+}
+
+void options_ignored_strings(options_t *options,
+                             const string_array_t *ignored_strings) {
+  assert(options != nullptr);
+  options->ignored_strings.clear();
+  if (ignored_strings == nullptr) {
+    return;
+  }
+  options->ignored_strings.reserve(ignored_strings->size());
+  std::transform(ignored_strings->begin(), ignored_strings->end(),
+                 std::back_inserter(options->ignored_strings), to_wide);
+}
+
+void options_parse_episode_number(options_t *options,
+                                  bool parse_episode_number) {
+  assert(options != nullptr);
+  options->parse_episode_number = parse_episode_number;
+}
+
+void options_parse_episode_title(options_t *options, bool parse_episode_title) {
+  assert(options != nullptr);
+  options->parse_episode_title = parse_episode_title;
+}
+
+void options_parse_file_extension(options_t *options,
+                                  bool parse_file_extension) {
+  assert(options != nullptr);
+  options->parse_file_extension = parse_file_extension;
+}
+
+void options_parse_release_group(options_t *options, bool parse_release_group) {
+  assert(options != nullptr);
+  options->parse_release_group = parse_release_group;
+}
+
+//
 // element_pair_t
 //
 
@@ -177,6 +227,11 @@ bool anitomy_parse(anitomy_t *anitomy, string_t filename) {
 const elements_t *anitomy_elements(const anitomy_t *anitomy) {
   assert(anitomy != nullptr);
   return reinterpret_cast<const elements_t *>(&anitomy->elements());
+}
+
+options_t *anitomy_options(anitomy_t *anitomy) {
+  assert(anitomy != nullptr);
+  return reinterpret_cast<options_t *>(&anitomy->options());
 }
 
 void anitomy_destroy(anitomy_t *anitomy) {

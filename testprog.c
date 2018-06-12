@@ -71,31 +71,34 @@ const char *element_category_name(element_category_t element_category) {
 
 int main(void) {
   anitomy_t *ani = anitomy_new();
+  assert(ani);
 
   string_t filename =
       "[異域字幕組][漆黑的子彈][Black Bullet][11-12][1280x720][繁体].mp4";
-
   printf("Filename: %s\n", filename);
 
-  bool succ = anitomy_parse(ani, filename);
-  assert(succ);
+  options_t *opts = anitomy_options(ani);
+  assert(opts);
+
+  string_array_t *ignored = string_array_new();
+  assert(ignored);
+  string_array_add(ignored, "Black");
+  assert(string_array_size(ignored) == 1);
+  options_ignored_strings(opts, ignored);
+  string_array_free(ignored);
+
+  assert(anitomy_parse(ani, filename));
 
   const elements_t *elems = anitomy_elements(ani);
+  assert(elems);
 
-  bool empty = elements_empty(elems);
-  assert(!empty);
-
-  size_t size = elements_count(elems);
-  assert(size == 7);
-
-  bool anititle_empty = elements_empty_category(elems, kElementAnimeTitle);
-  assert(!anititle_empty);
-
-  size_t anititle_count = elements_count_category(elems, kElementAnimeTitle);
-  assert(anititle_count == 1);
+  assert((!elements_empty(elems)));
+  assert((elements_count(elems) == 7));
+  assert((!elements_empty_category(elems, kElementAnimeTitle)));
+  assert((elements_count_category(elems, kElementAnimeTitle) == 1));
 
   string_t anititle = elements_get(elems, kElementAnimeTitle);
-  assert(strcmp(anititle, "Black Bullet") == 0);
+  assert((strcmp(anititle, "Bullet") == 0));
   string_free(anititle);
 
   string_array_t *epnums = elements_get_all(elems, kElementEpisodeNumber);
@@ -106,7 +109,8 @@ int main(void) {
 
   printf("Elements:\n");
 
-  for (size_t i = 0; i < size; ++i) {
+  size_t count = elements_count(elems);
+  for (size_t i = 0; i < count; ++i) {
     const element_pair_t *pair = elements_at(elems, i);
     element_category_t category = element_pair_category(pair);
     string_t value = element_pair_value(pair);
