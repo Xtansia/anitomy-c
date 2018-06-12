@@ -33,7 +33,10 @@ inline std::wstring to_wide(const std::string &str) {
 // string_t
 //
 
-void string_free(string_t string) { delete[] string; }
+void string_free(string_t string) {
+  assert(string != nullptr);
+  delete[] string;
+}
 
 inline string_t dupe_string(const std::string &str) {
   auto len = str.length();
@@ -47,20 +50,40 @@ inline string_t dupe_string(const std::string &str) {
 // string_array_t
 //
 
-struct string_array_t : public std::vector<string_t> {
-  explicit string_array_t(const std::vector<anitomy::string_t> &strings) {
+struct string_array_t : public std::vector<std::string> {
+  string_array_t() : std::vector<std::string>() {}
+
+  explicit string_array_t(const std::vector<anitomy::string_t> &strings)
+      : std::vector<std::string>() {
     this->reserve(strings.size());
     std::transform(strings.begin(), strings.end(), std::back_inserter(*this),
-                   [](const auto &it) { return dupe_string(from_wide(it)); });
+                   from_wide);
   }
 };
 
-const string_t *string_array_data(const string_array_t *array, size_t *size) {
-  *size = array->size();
-  return array->data();
+string_array_t *string_array_new() { return new string_array_t; }
+
+size_t string_array_size(const string_array_t *array) {
+  assert(array != nullptr);
+  return array->size();
 }
 
-void string_array_free(const string_array_t *array) { delete array; }
+string_t string_array_at(const string_array_t *array, size_t pos) {
+  assert(array != nullptr);
+  assert(pos < array->size());
+  return array->at(pos).c_str();
+}
+
+void string_array_add(string_array_t *array, string_t value) {
+  assert(array != nullptr);
+  assert(value != nullptr);
+  array->push_back(value);
+}
+
+void string_array_free(const string_array_t *array) {
+  assert(array != nullptr);
+  delete array;
+}
 
 //
 // element_pair_t

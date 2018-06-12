@@ -55,7 +55,10 @@ typedef struct anitomy_t anitomy_t;
 
 void string_free(string_t string);
 
-const string_t *string_array_data(const string_array_t *array, size_t *size);
+string_array_t *string_array_new();
+size_t string_array_size(const string_array_t *array);
+string_t string_array_at(const string_array_t *array, size_t pos);
+void string_array_add(string_array_t *array, string_t value);
 void string_array_free(const string_array_t *array);
 
 element_category_t element_pair_category(const element_pair_t *element_pair);

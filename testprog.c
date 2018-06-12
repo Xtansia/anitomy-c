@@ -99,11 +99,9 @@ int main(void) {
   string_free(anititle);
 
   string_array_t *epnums = elements_get_all(elems, kElementEpisodeNumber);
-  size_t epnums_size;
-  const string_t *epnums_data = string_array_data(epnums, &epnums_size);
-  assert(epnums_size == 2);
-  assert(strcmp(epnums_data[0], "11") == 0);
-  assert(strcmp(epnums_data[1], "12") == 0);
+  assert((string_array_size(epnums) == 2));
+  assert((strcmp(string_array_at(epnums, 0), "11") == 0));
+  assert((strcmp(string_array_at(epnums, 1), "12") == 0));
   string_array_free(epnums);
 
   printf("Elements:\n");
