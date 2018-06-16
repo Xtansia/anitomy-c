@@ -192,11 +192,7 @@ struct anitomy_t : public anitomy::Anitomy {
 };
 
 anitomy_t *anitomy_new() {
-  try {
-    return new anitomy_t;
-  } catch (...) {
-    return nullptr;
-  }
+  return new anitomy_t;
 }
 
 bool anitomy_parse(anitomy_t *anitomy, const char *filename) {
