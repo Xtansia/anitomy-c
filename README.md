@@ -1,6 +1,6 @@
 # anitomy-c
 [![License](https://img.shields.io/badge/license-MPL--2.0-blue.svg?style=flat-square&maxAge=2592000)](https://github.com/Xtansia/anitomy-c/raw/master/LICENSE)
-[![Linux & OSX Build Status](https://img.shields.io/travis/Xtansia/anitomy-c/master.svg?label=linux+%26+osx&style=flat-square&maxAge=2592000)](https://travis-ci.com/Xtansia/anitomy-c)  
+[![Linux & OSX Build Status](https://travis-ci.com/Xtansia/anitomy-c.svg?branch=master)](https://travis-ci.com/Xtansia/anitomy-c)  
 *anitomy-c* is a C ABI wrapper for [Anitomy](https://github.com/erengy/anitomy) a C++ library for parsing anime video filenames.
 
 ## Requirements
