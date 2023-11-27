@@ -9,10 +9,11 @@ jobs:
   build:
     strategy:
       matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          - windows-latest
+        include:
+          - os: ubuntu
+          - os: macos
+          - os: windows
+            test_prog_path: .\${{ env.BUILD_TYPE }}\anitomy_c_test.exe
 
     runs-on: ${{ matrix.os }}
 
@@ -29,4 +30,4 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        run: ./anitomy_c_test${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+        run: ${{ matrix.test_prog_path || './anitomy_c_test' }}
