@@ -6,6 +6,7 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
+#undef NDEBUG
 #include "anitomy_c.h"
 #include <assert.h>
 #include <stdio.h>
@@ -87,7 +88,8 @@ int main(void) {
   options_ignored_strings(opts, ignored);
   string_array_free(ignored);
 
-  assert(anitomy_parse(ani, filename));
+  const bool success = anitomy_parse(ani, filename);
+  assert(success);
 
   const elements_t *elems = anitomy_elements(ani);
   assert(elems);
