@@ -2,20 +2,14 @@ name: Build
 
 on: [pull_request, push]
 
-env:
-  BUILD_TYPE: Release
-
 jobs:
   build:
     strategy:
       matrix:
-        include:
-          - os: ubuntu
-          - os: macos
-          - os: windows
-            test_prog_path: .\${{ env.BUILD_TYPE }}\anitomy_c_test.exe
+        os: [ ubuntu, macos, windows ]
+        build_type: [ Release ]
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{matrix.os}}-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -23,11 +17,11 @@ jobs:
           submodules: recursive
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+        run: cmake --build ${{github.workspace}}/build --config ${{matrix.build_type}}
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        run: ${{ matrix.test_prog_path || './anitomy_c_test' }}
+        run: ${{matrix.os == 'windows' && format('.\{0}\anitomy_c_test.exe', matrix.build_type) || './anitomy_c_test'}}
