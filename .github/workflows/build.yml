@@ -29,4 +29,4 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        run: ./anitomy_c_test${{ matrix.os == "windows-latest" && ".exe" || "" }}
+        run: ./anitomy_c_test${{ matrix.os == 'windows-latest' && '.exe' || '' }}
