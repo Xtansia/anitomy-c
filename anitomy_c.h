@@ -14,7 +14,6 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stddef.h>
-#include <stdint.h>
 
 typedef enum ElementCategory {
   kElementIterateFirst,
@@ -56,7 +55,7 @@ typedef struct element_pair_t {
 typedef struct elements_t elements_t;
 typedef struct anitomy_t anitomy_t;
 
-void string_free(char *string);
+void string_free(const char *string);
 
 string_array_t *string_array_new();
 size_t string_array_size(const string_array_t *array);
@@ -88,9 +87,9 @@ string_array_t *elements_get_all(const elements_t *elements,
 
 anitomy_t *anitomy_new();
 bool anitomy_parse(anitomy_t *anitomy, const char *filename);
-const elements_t *anitomy_elements(const anitomy_t *anitomy);
+elements_t *anitomy_elements(anitomy_t *anitomy);
 options_t *anitomy_options(anitomy_t *anitomy);
-void anitomy_destroy(anitomy_t *anitomy);
+void anitomy_destroy(const anitomy_t *anitomy);
 
 #ifdef __cplusplus
 }

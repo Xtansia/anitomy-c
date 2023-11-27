@@ -17,7 +17,7 @@
 #include <locale>
 
 using wstring_converter = std::wstring_convert<
-    std::codecvt_utf8<wchar_t, 0x10ffff, std::little_endian>, wchar_t>;
+    std::codecvt_utf8<wchar_t, 0x10ffff, std::little_endian>>;
 
 inline std::string from_wide(const std::wstring &str) {
   thread_local wstring_converter conv;
@@ -29,14 +29,14 @@ inline std::wstring to_wide(const std::string &str) {
   return conv.from_bytes(str);
 }
 
-void string_free(char *string) {
+void string_free(const char *string) {
   assert(string != nullptr);
   delete[] string;
 }
 
 inline char *dupe_string(const std::wstring &wstr) {
-  auto str = from_wide(wstr);
-  auto len = str.length();
+  const auto str = from_wide(wstr);
+  const auto len = str.length();
   auto *out = new char[len + 1];
   str.copy(out, len);
   out[len] = '\0';
@@ -47,7 +47,7 @@ inline char *dupe_string(const std::wstring &wstr) {
 // string_array_t
 //
 
-struct string_array_t : public std::vector<std::string> {
+struct string_array_t : std::vector<std::string> {
   string_array_t() : std::vector<std::string>() {}
 
   explicit string_array_t(const std::vector<anitomy::string_t> &strings)
@@ -86,7 +86,7 @@ void string_array_free(const string_array_t *array) {
 // options_t
 //
 
-struct options_t : public anitomy::Options {};
+struct options_t : anitomy::Options {};
 
 void options_allowed_delimiters(options_t *options,
                                 const char *allowed_delimiters) {
@@ -136,8 +136,8 @@ void options_parse_release_group(options_t *options, bool parse_release_group) {
 // elements_t
 //
 
-struct elements_t : public anitomy::Elements {
-  using anitomy::Elements::Elements;
+struct elements_t : anitomy::Elements {
+  using Elements::Elements;
 };
 
 bool elements_empty(const elements_t *elements) {
@@ -187,8 +187,8 @@ string_array_t *elements_get_all(const elements_t *elements,
 // anitomy_t
 //
 
-struct anitomy_t : public anitomy::Anitomy {
-  using anitomy::Anitomy::Anitomy;
+struct anitomy_t : anitomy::Anitomy {
+  using Anitomy::Anitomy;
 };
 
 anitomy_t *anitomy_new() {
@@ -201,9 +201,9 @@ bool anitomy_parse(anitomy_t *anitomy, const char *filename) {
   return anitomy->Parse(to_wide(filename));
 }
 
-const elements_t *anitomy_elements(const anitomy_t *anitomy) {
+elements_t *anitomy_elements(anitomy_t *anitomy) {
   assert(anitomy != nullptr);
-  return reinterpret_cast<const elements_t *>(&anitomy->elements());
+  return reinterpret_cast<elements_t *>(&anitomy->elements());
 }
 
 options_t *anitomy_options(anitomy_t *anitomy) {
@@ -211,7 +211,7 @@ options_t *anitomy_options(anitomy_t *anitomy) {
   return reinterpret_cast<options_t *>(&anitomy->options());
 }
 
-void anitomy_destroy(anitomy_t *anitomy) {
+void anitomy_destroy(const anitomy_t *anitomy) {
   assert(anitomy != nullptr);
   delete anitomy;
 }

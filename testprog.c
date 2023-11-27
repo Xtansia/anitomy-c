@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 
-const char *element_category_name(element_category_t element_category) {
+const char *element_category_name(const element_category_t element_category) {
   switch (element_category) {
   case kElementAnimeSeason:
     return "AnimeSeason";
@@ -97,11 +97,11 @@ int main(void) {
   assert((!elements_empty_category(elems, kElementAnimeTitle)));
   assert((elements_count_category(elems, kElementAnimeTitle) == 1));
 
-  char *anititle = elements_get(elems, kElementAnimeTitle);
+  const char *anititle = elements_get(elems, kElementAnimeTitle);
   assert((strcmp(anititle, "Bullet") == 0));
   string_free(anititle);
 
-  string_array_t *epnums = elements_get_all(elems, kElementEpisodeNumber);
+  const string_array_t *epnums = elements_get_all(elems, kElementEpisodeNumber);
   assert((string_array_size(epnums) == 2));
   assert((strcmp(string_array_at(epnums, 0), "11") == 0));
   assert((strcmp(string_array_at(epnums, 1), "12") == 0));
@@ -109,9 +109,9 @@ int main(void) {
 
   printf("Elements:\n");
 
-  size_t count = elements_count(elems);
+  const size_t count = elements_count(elems);
   for (size_t i = 0; i < count; ++i) {
-    element_pair_t pair = elements_at(elems, i);
+    const element_pair_t pair = elements_at(elems, i);
     printf("  - %d: %s => '%s'\n", (int)i, element_category_name(pair.category),
            pair.value);
     string_free(pair.value);

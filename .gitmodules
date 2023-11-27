@@ -1,4 +1,4 @@
 [submodule "anitomy"]
 	path = anitomy
-    url = https://github.com/Xtansia/anitomy
-    branch = const_access
+	url = https://github.com/erengy/anitomy.git
+    branch = master
